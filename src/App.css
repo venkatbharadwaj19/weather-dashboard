@@ -1,38 +1,257 @@
+/* Google font for a fun, game-like vibe */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+:root{
+  --glass-bg: rgba(255,255,255,0.16);
+  --glass-bg-strong: rgba(255,255,255,0.22);
+  --glass-dark: rgba(0,0,0,0.25);
+  --radius: 18px;
+  --gap: 20px;
+}
+
+* { box-sizing: border-box; }
+
+body, html, #root { height: 100%; }
+
+
+/* App wrapper */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  color: #0e141b;
+  font-family: 'Orbitron', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  position: relative;
+  padding-bottom: 40px;
+
+  /* Light mode background */
+  background: linear-gradient(to bottom, #87CEEB 0%, #B0E0E6 50%, #F0F8FF 100%);
+ 
+}
+
+.App.dark {
+  color: #f0f0f0;
+
+  /* Dark mode background */
+  background: url("./assets/dark1.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* Remove overlay since we are directly using bg images */
+.App.dark::before {
+  content: none;
+}
+
+
+
+/* Top bar */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 18px 20px;
+}
+.brand{ margin:0; font-weight:700; letter-spacing:1px; }
+
+/* Controls */
+.controls { display:flex; gap: 12px; flex-wrap: wrap; }
+
+button{
+  border:none; cursor:pointer; padding: 10px 16px;
+  border-radius: 12px;
+  background: linear-gradient(45deg, #1e3c72, #2a5298);
+
+  color:#fff; font-weight:700;
+  transition: transform .2s, box-shadow .2s;
+}
+button:hover{ transform: translateY(-2px); box-shadow:0 8px 22px rgba(255,65,108,.45); }
+
+/* Search */
+form{ display:flex; align-items:center; justify-content:center; gap:10px; margin: 6px 20px 16px; }
+input{
+  padding:12px 14px; width: min(460px, 90vw);
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 12px; color:#fff;
+  outline:none;
+}
+input::placeholder{ color:#eaeaea99; }
+
+/* Loading + error */
+.loading-container{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; height: 38vh;
+  font-size:18px; color:#fff;
+}
+@keyframes dots{0%,20%{content:'.'}40%{content:'..'}60%{content:'...'}80%,100%{content:'.'}}
+.loading-text::after{ content:'.'; animation: dots 1s steps(3,end) infinite; }
+
+.error{ color:#ffb3b3; font-weight:700; text-align:center; animation: shake .25s; }
+@keyframes shake { 0%{transform:translateX(0)} 25%{transform:translateX(-5px)} 50%{transform:translateX(5px)} 75%{transform:translateX(-5px)} 100%{transform:translateX(0)} }
+
+/* Dashboard grid */
+.dashboard{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gap);
+  padding: 0 20px 20px;
+}
+
+/* Glass cards (spacing + hover) */
+.card{
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+}
+.card:hover{ transform: translateY(-6px); background: var(--glass-bg-strong); box-shadow: 0 20px 40px rgba(0,0,0,.35); }
+
+/* layout sizing */
+.card-big{ grid-column: span 5; min-width: 280px; }
+.stat{ grid-column: span 2; text-align:center; }
+.aqi{ grid-column: span 4; }
+.sunbox{ grid-column: span 3; }
+.forecastPane{ grid-column: span 12; }
+
+/* stat cards */
+.stat-title{ opacity:.9; font-size: 14px; margin-bottom: 4px; }
+.stat-value{ font-size: 26px; font-weight: 700; }
+
+/* WeatherCard inside */
+.weather-card h2{ margin: 0 0 6px; }
+.weather-card img{ width: 100px; filter: drop-shadow(0 6px 12px rgba(0,0,0,.4)); }
+.datetime{ margin-top: 10px; display:flex; gap:12px; flex-wrap:wrap; opacity:.95; }
+
+/* AQI grid */
+.section-title{ font-weight:700; margin-bottom:10px; }
+.aqi-grid{
+  display:grid; grid-template-columns: repeat(4,1fr); gap: 10px;
+}
+.aqi-label{ opacity:.9; font-size: 13px; }
+.aqi-val{ font-size: 16px; font-weight:700; }
+.muted{ opacity:.8; }
+
+/* Sunrise/Sunset */
+.sun-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+.sun-item{
+  background: rgba(255,255,255,.12);
+  border-radius: 12px; padding: 12px; text-align:center;
+}
+.sun-icon{ font-size: 28px; }
+.sun-label{ opacity:.9; }
+.sun-time{ font-weight:700; }
+
+/* Forecast */
+.forecast{ margin-top: 4px; }
+.forecast h2{ margin: 0 0 10px; }
+.forecast-grid{
+  display:flex; gap: 16px; flex-wrap: wrap;
+}
+.forecast-card{
+  background: rgba(255,255,255,.14);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.3);
+  padding: 12px; width: 140px; text-align:center; cursor:pointer;
+  transition: transform .2s, background .2s;
+}
+.forecast-card:hover{ transform: translateY(-4px) scale(1.03); background: rgba(255,255,255,.22); }
+.forecast-card img{ width: 60px; filter: drop-shadow(0 6px 12px rgba(0,0,0,.45)); }
+
+/* Modal */
+.modal-overlay{
+  position:fixed; inset:0; background: rgba(0,0,0,.6);
+  display:flex; align-items:center; justify-content:center; z-index:1000;
+}
+.modal-card{
+  position:relative; width:min(620px, 92vw); max-height: 80vh; overflow:auto;
+  background: linear-gradient(180deg,#1e3c72,#2a5298);
+  color:#fff; border-radius: 20px; padding: 28px; text-align:center;
+  box-shadow: 0 14px 40px rgba(0,0,0,.5);
+}
+.modal-card img{ width: 150px; height: 150px; margin: 10px 0; }
+.modal-close{
+  position:absolute; top:14px; left:14px; border:none; border-radius: 999px;
+  padding: 8px 14px; background: linear-gradient(45deg,#ff416c,#ff4b2b); color:#fff;
+  cursor:pointer; font-weight:700;
+}
+.modal-stats{
+  margin-top: 10px; display:flex; gap: 12px; justify-content:center; flex-wrap:wrap;
+  opacity:.95;
+}
+
+/* Dim overlay for dark mode while keeping bg visible */
+.App.dark::before{
+  content:""; position:fixed; inset:0; background: rgba(0,0,0,.25); z-index:-1;
+}
+
+
+
+/* Responsiveness */
+@media (max-width: 1100px){
+  .card-big{ grid-column: span 12; }
+  .stat{ grid-column: span 6; }
+  .aqi{ grid-column: span 12; }
+  .sunbox{ grid-column: span 12; }
+}
+@media (max-width: 420px){
+  input{ width: 75vw; }
+  .forecast-card{ width: 44vw; }
+}
+/* Container to help positioning */
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip bubble */
+.tooltip-bubble {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;   /* rounded edges */
+  padding: 12px 16px;
+  font-size: 16px;       /* bigger font */
+  font-family: inherit;  /* match site font */
+  color: #333;
+  white-space: pre-line; /* allow line breaks */
+  max-width: 240px;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  opacity: 0.95;
+}
+
+/* Position variants */
+.tooltip-top {
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip-bubble::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  border-width: 8px;
+  border-style: solid;
+}
+.tooltip-bubble::after,
+.tooltip-bubble::before {
+  display: none !important;
+  content: none !important;
+}
+
+
+/* Top arrow */
+.tooltip-bubble {
+  position: absolute;
+  bottom: 120%;  /* moves above instead of below */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
   color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  white-space: pre-line;
+  z-index: 1000; /* makes sure it's on top */
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
